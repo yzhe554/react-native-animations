@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "react-native-animations",
+    "slug": "react-native-animations",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
