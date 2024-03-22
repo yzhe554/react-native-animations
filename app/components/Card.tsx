@@ -21,7 +21,7 @@ export type CardProps = {
 }
 export const Card = ({index, last = false}) => {
   return (
-    <View style={{width: cardWidth, height: cardHeight, marginRight: last? 3*cardMargin : cardMargin, marginLeft: index === 0 ? cardMargin : 0}}>
+    <View style={{width: cardWidth, height: cardHeight, marginRight: last? cardMargin * 2 : cardMargin, marginLeft: index === 0 ? cardMargin * 2 : 0}}>
 
   <LinearGradient
           // Background Linear Gradient

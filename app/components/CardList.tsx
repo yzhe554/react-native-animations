@@ -1,39 +1,64 @@
 import { ScrollView } from "react-native-gesture-handler"
 import { Card, cardMargin, cardWidth } from "./Card"
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
-import { useRef } from "react"
+import { useMemo, useRef } from "react"
 import * as Haptics from 'expo-haptics';
 
-const maxIndex = 2;
+const maxIndex = 3;
 
 
-// const getIndex = (position: number): number => {
-//   if (position >= maxIndex * cardWidth) {
-//     return maxIndex;
-//   }
-//   const baseIndex = Math.floor((position - 16) / (cardWidth + cardMargin));
-//   const offsetX = position - baseIndex * (cardWidth + cardMargin);
-//   if (offsetX > cardWidth / 2) {
-//     return baseIndex + 1;
-//   }
-//   return baseIndex
-// }
+const getIndex = (position: number): number => {
+  if (position >= maxIndex * cardWidth) {
+    return maxIndex;
+  }
+  const baseIndex = Math.floor((position - 16) / (cardWidth + cardMargin));
+  const offsetX = position - baseIndex * (cardWidth + cardMargin);
+  if (offsetX > cardWidth / 2) {
+    return baseIndex + 1;
+  }
+  return baseIndex
+}
+
+
 
 export const CardList = () => {
   const scrollRef = useRef<ScrollView>(null);
 
+  // const onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+  //   const offsetX = e.nativeEvent.contentOffset.x;
+
+  //   const index = getIndex(e.nativeEvent.contentOffset.x);
+
+  //   console.log('index: ', index);
+  //   console.log('x: ', offsetX);
+  //   scrollRef.current?.scrollTo({
+  //     x: cardWidth * index,
+  //     animated: true
+  //   });
+  // }
+
   const onMomentumScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const index = e.nativeEvent.contentOffset.x / cardWidth;
+    const index = Math.round(e.nativeEvent.contentOffset.x / cardWidth);
     console.log('index: ', index);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   }
 
+  const snapToOffsets = useMemo(() => Array.from(Array(maxIndex), (_, i) => cardWidth * i + ((i - 1 < 0) ? 0 : cardMargin * (i-1))), []);
 
+  console.log('snapToOffsets: ', snapToOffsets);
   return (
-    <ScrollView ref={scrollRef} snapToInterval={334} decelerationRate={'fast'} horizontal showsHorizontalScrollIndicator={false} style={{paddingHorizontal: 16}} onMomentumScrollEnd={onMomentumScrollEnd}>
+    <ScrollView
+      ref={scrollRef}
+      snapToInterval={334}
+      snapToOffsets={snapToOffsets} 
+      decelerationRate={'fast'} 
+      horizontal showsHorizontalScrollIndicator={false} 
+      // onScrollEndDrag={onScrollEndDrag} 
+      onMomentumScrollEnd={onMomentumScrollEnd}>
       <Card index={0}></Card>
       <Card index={1}></Card>
-      <Card index={2} last></Card>
+      <Card index={2}></Card>
+      <Card index={3} last></Card>
     </ScrollView>
   )
 }
