@@ -1,7 +1,7 @@
-import { ScrollView } from "react-native-gesture-handler"
+import { Directions, Gesture, GestureDetector, GestureEvent, HandlerStateChangeEvent, ScrollView } from "react-native-gesture-handler"
 import { Card, cardMargin, cardWidth } from "./Card"
 import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from "react-native"
-import { useMemo, useRef } from "react"
+import { useMemo, useRef, useState } from "react"
 import * as Haptics from 'expo-haptics';
 import { SliderIndicator } from "./SliderIndicator";
 
@@ -20,49 +20,56 @@ const getIndex = (position: number): number => {
   return baseIndex
 }
 
+const getOffsetByIndex = (i: number): number => cardWidth * i + ((i - 1 < 0) ? 0 : cardMargin * (i-1))
+
 export const CardList = () => {
   const scrollRef = useRef<ScrollView>(null);
 
-  // const onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-  //   const offsetX = e.nativeEvent.contentOffset.x;
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  //   const index = getIndex(e.nativeEvent.contentOffset.x);
 
-  //   console.log('index: ', index);
-  //   console.log('x: ', offsetX);
-  //   scrollRef.current?.scrollTo({
-  //     x: cardWidth * index,
-  //     animated: true
-  //   });
-  // }
+  const onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const index = getIndex(e.nativeEvent.targetContentOffset?.x ?? 0);
 
-  const onMomentumScrollBegin = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const index = Math.round(getIndex(e.nativeEvent.contentOffset.x));
-    console.log('onMomentumScrollBegin: index: ', index);
+    setCurrentIndex(index);
+
+    console.log('index: ', index);
+    // console.log('x: ', offsetX);
+    // scrollRef.current?.scrollTo({
+    //   x: cardWidth * index,
+    //   animated: true
+    // });
   }
 
   const onMomentumScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const index = getIndex(e.nativeEvent.contentOffset.x);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   }
 
-  const snapToOffsets = useMemo(() => Array.from(Array(maxIndex), (_, i) => cardWidth * i + ((i - 1 < 0) ? 0 : cardMargin * (i-1))), []);
+  const snapToOffsets = useMemo(() => Array.from(Array(maxIndex), (_, i) => getOffsetByIndex(i)), []);
+
+  const onCancelled = (event: HandlerStateChangeEvent) => {
+    console.log('event: ', event);
+  }
 
   return (
     <View>
     <ScrollView
       ref={scrollRef}
-      snapToInterval={334}
+      onCancelled={onCancelled}
+      // snapToInterval={20}
       snapToOffsets={snapToOffsets} 
       decelerationRate={'fast'} 
       horizontal showsHorizontalScrollIndicator={false} 
-      // onScrollEndDrag={onScrollEndDrag} 
-      onMomentumScrollBegin={onMomentumScrollBegin}
-      onMomentumScrollEnd={onMomentumScrollEnd}>
+      onScrollEndDrag={onScrollEndDrag} 
+      onMomentumScrollEnd={onMomentumScrollEnd}
+    >
       <Card index={0}></Card>
       <Card index={1}></Card>
       <Card index={2}></Card>
       <Card index={3} last></Card>
     </ScrollView>
+    <SliderIndicator totalCount={maxIndex + 1} index={currentIndex} />
     </View>
   )
 }
