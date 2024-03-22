@@ -2,6 +2,7 @@ import { ScrollView } from "react-native-gesture-handler"
 import { Card, cardMargin, cardWidth } from "./Card"
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { useRef } from "react"
+import * as Haptics from 'expo-haptics';
 
 const maxIndex = 2;
 
@@ -24,8 +25,7 @@ export const CardList = () => {
   const onMomentumScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const index = e.nativeEvent.contentOffset.x / cardWidth;
     console.log('index: ', index);
-
-
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   }
 
 
