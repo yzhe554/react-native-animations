@@ -65,9 +65,9 @@ export const CardList = () => {
   return (
     <View style={{ marginTop: 16 }}>
       <ScrollView
+        style={{ paddingHorizontal: cardMargin }}
         ref={scrollRef}
         onCancelled={onCancelled}
-        // snapToInterval={20}
         snapToOffsets={snapToOffsets}
         decelerationRate="fast"
         horizontal

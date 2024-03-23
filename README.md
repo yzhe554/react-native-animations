@@ -1,3 +1,5 @@
-<img width="420" alt="image" src="https://github.com/yzhe554/react-native-animations/assets/7010056/acc7ff80-0846-4e7d-83fc-4a61b30c4119">
+![alt text](<assets/Simulator Screenshot - iPhone 15 Pro Max - 2024-03-24 at 10.29.35.png>)
 
-https://github.com/yzhe554/react-native-animations/assets/7010056/b77fcd4d-3c61-48f2-b4d6-194aa7968d72
+<video width="1280" height="960" controls>
+  <source src="assets/Screen Recording 2024-03-24 at 10.31.57 AM.mov" type="video/mp4">
+</video>

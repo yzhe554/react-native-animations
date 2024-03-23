@@ -33,7 +33,7 @@ export default function CardTab() {
   const onScrollEndDrag = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       const offsetY = e.nativeEvent.contentOffset.y;
-      if (offsetY < headerSafeHeigh && offsetY > headerSafeHeigh - 8) {
+      if (offsetY < headerSafeHeigh && offsetY > headerSafeHeigh - 12) {
         scrollRef.current?.scrollTo({
           y: headerSafeHeigh,
           animated: true,

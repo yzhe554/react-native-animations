@@ -15,13 +15,11 @@ export type CardProps = {
 };
 export const Card = ({ index, last = false }) => {
   return (
-    <View>
+    <View style={{ paddingLeft: 16, paddingRight: last ? cardMargin * 3 : 0 }}>
       <View
         style={{
           width: cardWidth,
           height: cardHeight,
-          marginRight: last ? cardMargin * 2 : cardMargin,
-          marginLeft: index === 0 ? cardMargin * 2 : 0,
           justifyContent: 'space-between',
         }}>
         <View
@@ -64,7 +62,11 @@ export const Card = ({ index, last = false }) => {
           }}
         />
       </View>
-      <View style={{ marginVertical: 16, alignItems: 'center' }}>
+      <View
+        style={{
+          alignItems: 'center',
+          marginTop: 16,
+        }}>
         <Text>Complete Access</Text>
         <Text>$1234 Available</Text>
       </View>
