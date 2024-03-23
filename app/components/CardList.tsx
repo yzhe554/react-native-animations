@@ -66,7 +66,7 @@ export const CardList = () => {
   };
 
   return (
-    <View style={{ marginTop: 16, height: 10000 }}>
+    <View style={{ marginTop: 16 }}>
       <ScrollView
         ref={scrollRef}
         onCancelled={onCancelled}

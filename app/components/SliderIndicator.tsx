@@ -12,7 +12,6 @@ const Dots = ({ totalCount, index }: IndicatorProps) => {
     <View
       style={{
         flex: 1,
-        alignContent: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
         marginTop: 16,
