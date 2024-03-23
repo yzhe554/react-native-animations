@@ -17,7 +17,7 @@ const Dots = ({ totalCount, index }: IndicatorProps) => {
         marginTop: 16,
       }}>
       {Array.from(Array(totalCount), (_, i) => {
-        return <Dot selected={i === index} />;
+        return <Dot key={i} selected={i === index} />;
       })}
     </View>
   );

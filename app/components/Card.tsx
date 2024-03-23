@@ -1,19 +1,13 @@
-import {
-  Canvas,
-  Rect,
-  // LinearGradient,
-  Skia,
-  Shader,
-  vec,
-} from '@shopify/react-native-skia';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { Dimensions, Text, View } from 'react-native';
+import { Dimensions, Image, Text, View } from 'react-native';
+
+import IconTabNavHomeSelected24Logo from '../../assets/iconTabNavHomeSelected24.png';
 
 export const cardMargin = 16;
 export const windowWidth = Dimensions.get('window').width;
-export const cardWidth = windowWidth - cardMargin * 6;
-export const cardHeight = (cardWidth / 16) * 9;
+export const cardWidth = windowWidth - cardMargin * 4;
+export const cardHeight = (cardWidth / 16) * 10;
 
 export type CardProps = {
   index: number;
@@ -21,33 +15,59 @@ export type CardProps = {
 };
 export const Card = ({ index, last = false }) => {
   return (
-    <View
-      style={{
-        width: cardWidth,
-        height: cardHeight,
-        marginRight: last ? cardMargin * 2 : cardMargin,
-        marginLeft: index === 0 ? cardMargin * 2 : 0,
-      }}>
-      <LinearGradient
-        // Background Linear Gradient
-        colors={['rgba(0,0,0,0.8)', 'transparent']}
+    <View>
+      <View
         style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: 0,
+          width: cardWidth,
           height: cardHeight,
-        }}
-      />
-      {/* <Canvas style={{ height: cardHeight, marginHorizontal: cardMargin }}>
-      <Rect x={0} y={0} width={cardWidth} height={cardHeight}>
+          marginRight: last ? cardMargin * 2 : cardMargin,
+          marginLeft: index === 0 ? cardMargin * 2 : 0,
+          justifyContent: 'space-between',
+        }}>
+        <View
+          style={{
+            // flex: 1,
+            zIndex: 1,
+            marginHorizontal: 16,
+            marginTop: 16,
+            flexDirection: 'row',
+            alignContent: 'center',
+            justifyContent: 'space-between',
+            height: 32,
+            alignItems: 'center',
+          }}>
+          <Image style={{ width: 24, height: 24 }} source={IconTabNavHomeSelected24Logo} />
+          <Text style={{}}>5320 4243 4342 5435</Text>
+        </View>
+        <View
+          style={{
+            zIndex: 1,
+            marginHorizontal: 16,
+            marginBottom: 16,
+          }}>
+          <Text>Debit MasterCard Platinum</Text>
+          <Text style={{ marginTop: 8, fontSize: 13, fontWeight: '300' }}>John Snow</Text>
+          <Text style={{ fontSize: 13, fontWeight: '300' }}>EXPIRY **/**</Text>
+          <Text style={{ fontSize: 13, fontWeight: '300' }}>CVC ***</Text>
+        </View>
         <LinearGradient
-          start={vec(0, 0)}
-          end={vec(cardWidth, 0)}
-          colors={["white", "grey"]}
+          // Background Linear Gradient
+          colors={['#ECECEC', '#9E9E9E']}
+          start={{ x: 0, y: 1 }}
+          end={{ x: 1, y: 0 }}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height: cardHeight,
+          }}
         />
-      </Rect>
-    </Canvas> */}
+      </View>
+      <View style={{ marginVertical: 16, alignItems: 'center' }}>
+        <Text>Complete Access</Text>
+        <Text>$1234 Available</Text>
+      </View>
     </View>
   );
 };

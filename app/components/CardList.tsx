@@ -20,18 +20,15 @@ const getIndex = (position: number): number => {
     return maxIndex;
   }
   const baseIndex = Math.floor((position - 16) / (cardWidth + cardMargin));
-  const offsetX =
-    position -
-    baseIndex * (cardWidth + cardMargin) -
-    (baseIndex - 1 < 0 ? 0 : (baseIndex - 1) * cardMargin);
+  const offsetX = position - baseIndex * (cardWidth + cardMargin) - baseIndex * cardMargin;
+  // (baseIndex - 1 < 0 ? 0 : (baseIndex - 1) * cardMargin);
   if (offsetX > cardWidth / 2) {
     return baseIndex + 1;
   }
   return baseIndex;
 };
 
-const getOffsetByIndex = (i: number): number =>
-  cardWidth * i + (i - 1 < 0 ? 0 : cardMargin * (i - 1));
+const getOffsetByIndex = (i: number): number => cardWidth * i + cardMargin * i;
 
 export const CardList = () => {
   const scrollRef = useRef<ScrollView>(null);
