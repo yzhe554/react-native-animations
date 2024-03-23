@@ -11,7 +11,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: '',
+          title: 'Cards',
+          headerTitle: '',
           headerRight: () => <Image style={{ marginRight: 24 }} source={ControlHelpChat24Logo} />,
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
         }}

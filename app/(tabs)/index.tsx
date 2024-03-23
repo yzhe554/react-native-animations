@@ -19,11 +19,11 @@ export default function CardTab() {
       // -4 is when cards is invisible in content
       if (offsetY >= headerSafeHeigh - 4) {
         navigation.setOptions({
-          title: 'Cards',
+          headerTitle: 'Cards',
         });
       } else {
         navigation.setOptions({
-          title: '',
+          headerTitle: '',
         });
       }
     },
