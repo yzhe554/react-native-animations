@@ -3,12 +3,8 @@
     "name": "react-native-animations",
     "slug": "react-native-animations",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "plugins": [
-      "expo-router"
-    ],
+    "assetBundlePatterns": ["**/*"],
+    "plugins": ["expo-router"],
     "scheme": "react-native-animations"
   }
 }

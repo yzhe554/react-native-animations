@@ -1,40 +1,45 @@
-import React from "react";
 import {
   Canvas,
   Rect,
   // LinearGradient,
   Skia,
   Shader,
-  vec
-} from "@shopify/react-native-skia";
-import { Dimensions, Text, View } from "react-native";
+  vec,
+} from '@shopify/react-native-skia';
 import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
+import { Dimensions, Text, View } from 'react-native';
 
 export const cardMargin = 16;
 export const windowWidth = Dimensions.get('window').width;
 export const cardWidth = windowWidth - cardMargin * 6;
-export const cardHeight = cardWidth / 16 * 9;
- 
+export const cardHeight = (cardWidth / 16) * 9;
+
 export type CardProps = {
   index: number;
-  last?: boolean
-}
-export const Card = ({index, last = false}) => {
+  last?: boolean;
+};
+export const Card = ({ index, last = false }) => {
   return (
-    <View style={{width: cardWidth, height: cardHeight, marginRight: last? cardMargin * 2 : cardMargin, marginLeft: index === 0 ? cardMargin * 2 : 0}}>
-
-  <LinearGradient
-          // Background Linear Gradient
-          colors={['rgba(0,0,0,0.8)', 'transparent']}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            height: cardHeight,
-          }}
+    <View
+      style={{
+        width: cardWidth,
+        height: cardHeight,
+        marginRight: last ? cardMargin * 2 : cardMargin,
+        marginLeft: index === 0 ? cardMargin * 2 : 0,
+      }}>
+      <LinearGradient
+        // Background Linear Gradient
+        colors={['rgba(0,0,0,0.8)', 'transparent']}
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          height: cardHeight,
+        }}
       />
-    {/* <Canvas style={{ height: cardHeight, marginHorizontal: cardMargin }}>
+      {/* <Canvas style={{ height: cardHeight, marginHorizontal: cardMargin }}>
       <Rect x={0} y={0} width={cardWidth} height={cardHeight}>
         <LinearGradient
           start={vec(0, 0)}
@@ -45,4 +50,4 @@ export const Card = ({index, last = false}) => {
     </Canvas> */}
     </View>
   );
-}
+};
