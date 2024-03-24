@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 declare module 'contrast-color';
 
 declare module '*.png' {

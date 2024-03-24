@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Dimensions, Image, Text, View } from 'react-native';
 
 import IconTabNavHomeSelected24Logo from '../../assets/iconTabNavHomeSelected24.png';
@@ -13,9 +13,10 @@ export type CardProps = {
   index: number;
   last?: boolean;
 };
-export const Card = ({ index, last = false }) => {
+export const Card = ({ index, last = false }: CardProps) => {
+  const paddingRight = useMemo(() => (last ? cardMargin * 3 : 0), [last]);
   return (
-    <View style={{ paddingLeft: 16, paddingRight: last ? cardMargin * 3 : 0 }}>
+    <View style={{ paddingLeft: 16, paddingRight }}>
       <View
         style={{
           width: cardWidth,

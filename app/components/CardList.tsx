@@ -1,14 +1,7 @@
 import * as Haptics from 'expo-haptics';
-import { useMemo, useRef, useState } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
-import {
-  Directions,
-  Gesture,
-  GestureDetector,
-  GestureEvent,
-  HandlerStateChangeEvent,
-  ScrollView,
-} from 'react-native-gesture-handler';
+import React, { useMemo, useRef, useState } from 'react';
+import { NativeScrollEvent, NativeSyntheticEvent, View } from 'react-native';
+import { HandlerStateChangeEvent, ScrollView } from 'react-native-gesture-handler';
 
 import { Card, cardMargin, cardWidth } from './Card';
 import { SliderIndicator } from './SliderIndicator';
@@ -48,8 +41,7 @@ export const CardList = () => {
     // });
   };
 
-  const onMomentumScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const index = getIndex(e.nativeEvent.contentOffset.x);
+  const onMomentumScrollEnd = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
@@ -59,7 +51,7 @@ export const CardList = () => {
   );
 
   const onCancelled = (event: HandlerStateChangeEvent) => {
-    console.log('event: ', event);
+    console.log('event:', event);
   };
 
   return (

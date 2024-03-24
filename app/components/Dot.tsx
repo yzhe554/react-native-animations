@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
@@ -11,7 +11,11 @@ const styles = StyleSheet.create({
 
 const dotSize = 10;
 
-const DotBase = ({ selected }) => {
+type Props = {
+  selected: boolean;
+};
+
+const DotBase = ({ selected }: Props) => {
   const progress = useSharedValue(0);
 
   const reanimatedStyle = useAnimatedStyle(() => {
