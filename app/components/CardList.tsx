@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import * as Haptics from 'expo-haptics';
 import React, { useMemo, useRef, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent, View } from 'react-native';
@@ -5,6 +6,7 @@ import { HandlerStateChangeEvent, ScrollView } from 'react-native-gesture-handle
 
 import { Card, cardMargin, cardWidth } from './Card';
 import { SliderIndicator } from './SliderIndicator';
+import { CardRepository } from '../../data/repository/card-repository';
 
 const maxIndex = 3;
 
@@ -23,7 +25,33 @@ const getIndex = (position: number): number => {
 
 const getOffsetByIndex = (i: number): number => cardWidth * i + cardMargin * i;
 
+const cardRepository = new CardRepository();
+
 export const CardList = () => {
+  const query = useQuery({
+    queryKey: ['card'],
+    async queryFn() {
+      return cardRepository.getCards();
+    },
+  });
+
+  const cards = query.data;
+  console.log('cards: ', cards);
+
+  // const insert = useCallback(async () => {
+  //   return cardRepository.createCard({
+  //     number: '5320 4243 4342 5435',
+  //     name: 'John Snow',
+  //     type: 'Debit MasterCard Platinum',
+  //     expiry: '12/2030',
+  //     cvc: '123',
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   insert();
+  // }, [insert]);
+
   const scrollRef = useRef<ScrollView>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
