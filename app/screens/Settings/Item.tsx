@@ -1,8 +1,12 @@
 import React, { ReactNode } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
-import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
+import {
+  Gesture,
+  GestureDetector,
+  GestureStateChangeEvent,
+  PanGestureHandlerEventPayload,
+} from 'react-native-gesture-handler';
 import Animated, {
-  useAnimatedGestureHandler,
   useAnimatedStyle,
   useAnimatedReaction,
   withSpring,
@@ -36,6 +40,9 @@ const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing
   const translateX = useSharedValue(position.x);
   const translateY = useSharedValue(position.y);
 
+  const ctxX = useSharedValue(0);
+  const ctxY = useSharedValue(0);
+
   useAnimatedReaction(
     () => positions.value[id]!,
     (newOrder) => {
@@ -47,23 +54,22 @@ const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing
     },
   );
 
-  const onGestureEvent = useAnimatedGestureHandler<
-    PanGestureHandlerGestureEvent,
-    { x: number; y: number }
-  >({
-    onStart: (_, ctx) => {
+  const panGesture = Gesture.Pan()
+    .onStart((event: GestureStateChangeEvent<PanGestureHandlerEventPayload>) => {
       // dont allow drag start if we're done editing
       if (editing) {
-        ctx.x = translateX.value;
-        ctx.y = translateY.value;
+        console.log('ctx.value: ', ctxX.value);
+        ctxX.value = translateX.value;
+        ctxY.value = translateY.value;
+
         isGestureActive.value = true;
       }
-    },
-    onActive: ({ translationX, translationY }, ctx) => {
+    })
+    .onChange(({ translationX, translationY }) => {
       // dont allow drag if we're done editing
       if (editing) {
-        translateX.value = ctx.x + translationX;
-        translateY.value = ctx.y + translationY;
+        translateX.value = ctxX.value + translationX;
+        translateY.value = ctxY.value + translationY;
         // 1. We calculate where the tile should be
         const newOrder = getOrder(
           translateX.value,
@@ -89,34 +95,35 @@ const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing
 
         // 3. Scroll up and down if necessary
         const lowerBound = scrollY.value;
-        const upperBound = lowerBound + containerHeight - HEIGHT;
+        const upperBound = lowerBound + containerHeight - SIZE;
         const maxScroll = contentHeight - containerHeight;
         const leftToScrollDown = maxScroll - scrollY.value;
         if (translateY.value < lowerBound) {
           const diff = Math.min(lowerBound - translateY.value, lowerBound);
           scrollY.value -= diff;
           scrollTo(scrollView, 0, scrollY.value, false);
-          ctx.y -= diff;
-          translateY.value = ctx.y + translationY;
+          ctxY.value -= diff;
+          translateY.value = ctxY.value + translationY;
         }
         if (translateY.value > upperBound) {
           const diff = Math.min(translateY.value - upperBound, leftToScrollDown);
           scrollY.value += diff;
           scrollTo(scrollView, 0, scrollY.value, false);
-          ctx.y += diff;
-          translateY.value = ctx.y + translationY;
+          ctxY.value += diff;
+          translateY.value = ctxY.value + translationY;
         }
       }
-    },
-    onEnd: () => {
+    })
+    .onEnd(() => {
       const newPosition = getPosition(positions.value[id]!);
       translateX.value = withTiming(newPosition.x, animationConfig, () => {
         isGestureActive.value = false;
         runOnJS(onDragEnd)(positions.value);
       });
       translateY.value = withTiming(newPosition.y, animationConfig);
-    },
-  });
+    })
+    .enabled(editing);
+
   const style = useAnimatedStyle(() => {
     const zIndex = isGestureActive.value ? 100 : 0;
     const scale = withSpring(isGestureActive.value ? 1.05 : 1);
@@ -132,9 +139,11 @@ const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing
   });
   return (
     <Animated.View style={style}>
-      <PanGestureHandler enabled={editing} onGestureEvent={onGestureEvent}>
+      {/* <PanGestureHandler enabled={editing} onGestureEvent={onGestureEvent}> */}
+      <GestureDetector gesture={panGesture}>
         <Animated.View style={StyleSheet.absoluteFill}>{children}</Animated.View>
-      </PanGestureHandler>
+      </GestureDetector>
+      {/* </PanGestureHandler> */}
     </Animated.View>
   );
 };
