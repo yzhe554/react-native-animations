@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 
 import { MARGIN } from './Config';
 import { SortableList } from './SortableList';
@@ -43,7 +43,7 @@ const tiles = [
 
 export const Chrome = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black', paddingHorizontal: MARGIN }}>
+    <View style={{ flex: 1, backgroundColor: 'black', padding: MARGIN }}>
       <SortableList
         editing
         onDragEnd={(positions) => console.log(JSON.stringify(positions, null, 2))}>
@@ -56,6 +56,6 @@ export const Chrome = () => {
           />
         ))}
       </SortableList>
-    </SafeAreaView>
+    </View>
   );
 };

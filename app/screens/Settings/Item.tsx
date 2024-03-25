@@ -1,3 +1,5 @@
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useHeaderHeight } from '@react-navigation/elements';
 import React, { ReactNode } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import {
@@ -16,9 +18,17 @@ import Animated, {
   runOnJS,
   AnimatedRef,
 } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { animationConfig, COL, getOrder, getPosition, HEIGHT, Positions, SIZE } from './Config';
+import {
+  animationConfig,
+  COL,
+  getOrder,
+  getPosition,
+  HEIGHT,
+  MARGIN,
+  Positions,
+  SIZE,
+} from './Config';
 
 interface ItemProps {
   children: ReactNode;
@@ -31,8 +41,11 @@ interface ItemProps {
 }
 
 const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing }: ItemProps) => {
-  const inset = useSafeAreaInsets();
-  const containerHeight = Dimensions.get('window').height - inset.top - inset.bottom;
+  const top = useHeaderHeight();
+  const bottom = useBottomTabBarHeight();
+
+  // - chrome padding * 2
+  const containerHeight = Dimensions.get('window').height - top - bottom - MARGIN * 2;
   const contentHeight = (Object.keys(positions.value).length / COL) * HEIGHT;
   const isGestureActive = useSharedValue(false);
 
