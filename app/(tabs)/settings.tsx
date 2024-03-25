@@ -1,10 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+
+import { Chrome } from '../screens/Settings/Chrome';
 
 export default function SettingsTab() {
-  return (
-    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-      <Text>Tab Settings</Text>
-    </View>
-  );
+  return <Chrome />;
 }
