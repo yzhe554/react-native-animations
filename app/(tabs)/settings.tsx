@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Chrome } from '../screens/Settings/Chrome';
+import { Settings } from '../screens/Settings/Settings';
 
 export default function SettingsTab() {
-  return <Chrome />;
+  return <Settings />;
 }

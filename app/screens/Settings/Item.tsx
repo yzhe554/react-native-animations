@@ -17,6 +17,7 @@ import Animated, {
   useSharedValue,
   runOnJS,
   AnimatedRef,
+  SharedValue,
 } from 'react-native-reanimated';
 
 import {
@@ -32,12 +33,12 @@ import {
 
 interface ItemProps {
   children: ReactNode;
-  positions: Animated.SharedValue<Positions>;
+  positions: SharedValue<Positions>;
   id: string;
   editing: boolean;
   onDragEnd: (diffs: Positions) => void;
   scrollView: AnimatedRef<Animated.ScrollView>;
-  scrollY: Animated.SharedValue<number>;
+  scrollY: SharedValue<number>;
 }
 
 const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing }: ItemProps) => {
@@ -71,7 +72,6 @@ const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing
     .onStart((event: GestureStateChangeEvent<PanGestureHandlerEventPayload>) => {
       // dont allow drag start if we're done editing
       if (editing) {
-        console.log('ctx.value: ', ctxX.value);
         ctxX.value = translateX.value;
         ctxY.value = translateY.value;
 
@@ -83,12 +83,9 @@ const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing
       if (editing) {
         translateX.value = ctxX.value + translationX;
         translateY.value = ctxY.value + translationY;
+
         // 1. We calculate where the tile should be
-        const newOrder = getOrder(
-          translateX.value,
-          translateY.value,
-          Object.keys(positions.value).length - 1,
-        );
+        const newOrder = getOrder(translateY.value, Object.keys(positions.value).length - 1);
 
         // 2. We swap the positions
         const oldOlder = positions.value[id];
@@ -109,8 +106,12 @@ const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing
         // 3. Scroll up and down if necessary
         const lowerBound = scrollY.value;
         const upperBound = lowerBound + containerHeight - SIZE;
+
         const maxScroll = contentHeight - containerHeight;
         const leftToScrollDown = maxScroll - scrollY.value;
+        if (maxScroll < 0) {
+          return;
+        }
         if (translateY.value < lowerBound) {
           const diff = Math.min(lowerBound - translateY.value, lowerBound);
           scrollY.value -= diff;
@@ -139,7 +140,7 @@ const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing
 
   const style = useAnimatedStyle(() => {
     const zIndex = isGestureActive.value ? 100 : 0;
-    const scale = withSpring(isGestureActive.value ? 1.05 : 1);
+    const scale = withSpring(isGestureActive.value ? 1 : 1);
     return {
       position: 'absolute',
       top: 0,
@@ -147,7 +148,8 @@ const Item = ({ children, positions, id, onDragEnd, scrollView, scrollY, editing
       width: SIZE,
       height: HEIGHT,
       zIndex,
-      transform: [{ translateX: translateX.value }, { translateY: translateY.value }, { scale }],
+      // transform: [{ translateX: translateX.value }, { translateY: translateY.value }, { scale }],
+      transform: [{ translateY: translateY.value }, { scale }],
     };
   });
   return (

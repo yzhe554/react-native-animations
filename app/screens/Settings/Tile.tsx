@@ -8,21 +8,24 @@ const styles = StyleSheet.create({
     width: SIZE,
     height: HEIGHT,
     borderColor: 'red',
-    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e8e8e8',
     backgroundColor: 'white',
   },
 });
 interface TileProps {
   id: string;
-  uri: string;
+  type: string;
+  details?: string;
   onLongPress: () => void;
 }
 
-export const Tile = ({ uri }: TileProps) => {
+export const Tile = ({ type, details }: TileProps) => {
   return (
     <View style={styles.container} pointerEvents="none">
-      <View style={{ flex: 1 }}>
-        <Text>{uri}</Text>
+      <View style={{ flex: 1, margin: 16 }}>
+        <Text>{type}</Text>
+        {details ? <Text>{details}</Text> : null}
       </View>
     </View>
   );

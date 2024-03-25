@@ -25,12 +25,10 @@ export const getPosition = (position: number) => {
   };
 };
 
-export const getOrder = (tx: number, ty: number, max: number) => {
+export const getOrder = (ty: number, max: number) => {
   'worklet';
 
-  const x = Math.round(tx / SIZE) * SIZE;
   const y = Math.round(ty / HEIGHT) * HEIGHT;
   const row = Math.max(y, 0) / HEIGHT;
-  const col = Math.max(x, 0) / SIZE;
-  return Math.min(row * COL + col, max);
+  return Math.min(row * COL, max);
 };
