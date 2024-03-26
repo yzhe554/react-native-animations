@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import Animated, {
   useAnimatedRef,
   useAnimatedScrollHandler,
@@ -6,19 +6,20 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { COL, HEIGHT, Positions } from './Config';
-import Item from './Item';
+import { Tile } from './Tile';
+import { Tile as TileShape } from './models';
 
 interface ListProps {
-  children: ReactElement<{ id: string }>[];
+  tiles: TileShape[];
   editing: boolean;
   onDragEnd: (diff: Positions) => void;
 }
 
-export const SortableList = ({ children, editing, onDragEnd }: ListProps) => {
+export const SortableList = ({ tiles, editing, onDragEnd }: ListProps) => {
   const scrollY = useSharedValue(0);
   const scrollView = useAnimatedRef<Animated.ScrollView>();
   const positions = useSharedValue<Positions>(
-    Object.assign({}, ...children.map((child, index) => ({ [child.props.id]: index }))),
+    Object.assign({}, ...tiles.map((tile, index) => ({ [tile.id]: index }))),
   );
   const onScroll = useAnimatedScrollHandler({
     onScroll: ({ contentOffset: { y } }) => {
@@ -31,23 +32,24 @@ export const SortableList = ({ children, editing, onDragEnd }: ListProps) => {
       onScroll={onScroll}
       ref={scrollView}
       contentContainerStyle={{
-        height: Math.ceil(children.length / COL) * HEIGHT,
+        height: Math.ceil(tiles.length / COL) * HEIGHT,
       }}
       showsVerticalScrollIndicator={false}
       bounces={false}
       scrollEventThrottle={16}>
-      {children.map((child) => {
+      {tiles.map((tile, index) => {
         return (
-          <Item
-            key={child.props.id}
+          <Tile
+            key={`${tile.id}-${index}`}
             positions={positions}
-            id={child.props.id}
+            id={tile.id}
             editing={editing}
             onDragEnd={onDragEnd}
             scrollView={scrollView}
-            scrollY={scrollY}>
-            {child}
-          </Item>
+            scrollY={scrollY}
+            type={tile.type}
+            details={tile.details}
+          />
         );
       })}
     </Animated.ScrollView>

@@ -3,15 +3,9 @@ import { View } from 'react-native';
 
 import { MARGIN } from './Config';
 import { SortableList } from './SortableList';
-import { Tile } from './Tile';
+import { Tile } from './models';
 
-type TileProp = {
-  id: string;
-  type: string;
-  details?: string;
-};
-
-const tiles: TileProp[] = [
+const tiles: Tile[] = [
   {
     id: 'completeAccess',
     type: 'Complete Access',
@@ -32,19 +26,12 @@ export const Settings = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#e8e8e8', padding: MARGIN }}>
       <SortableList
+        tiles={tiles}
         editing
         onDragEnd={(positions) => {
           // console.log(JSON.stringify(positions, null, 2));
-        }}>
-        {tiles.map((tile, index) => (
-          <Tile
-            key={tile.id + '-' + index}
-            id={tile.id + '-' + index}
-            type={tile.type}
-            details={tile.details}
-          />
-        ))}
-      </SortableList>
+        }}
+      />
     </View>
   );
 };
