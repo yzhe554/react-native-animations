@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   container: {
     width: SIZE,
     height: HEIGHT,
-    borderColor: 'red',
     borderBottomWidth: 1,
     borderBottomColor: '#e8e8e8',
     backgroundColor: 'white',
@@ -178,6 +177,7 @@ export const Tile = ({
       height: HEIGHT,
       zIndex,
       transform: [{ translateY: translateY.value }, { scale }],
+      flex: 1,
     };
   });
   return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import Animated, {
   useAnimatedRef,
   useAnimatedScrollHandler,
@@ -32,7 +33,7 @@ export const SortableList = ({ tiles, editing, onDragEnd }: ListProps) => {
       onScroll={onScroll}
       ref={scrollView}
       contentContainerStyle={{
-        height: Math.ceil(tiles.length / COL) * HEIGHT,
+        height: Platform.OS === 'ios' ? Math.ceil(tiles.length / COL) * HEIGHT : '100%',
       }}
       showsVerticalScrollIndicator={false}
       bounces={false}
