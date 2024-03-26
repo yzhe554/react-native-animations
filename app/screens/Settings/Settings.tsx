@@ -38,7 +38,6 @@ export const Settings = () => {
         }}>
         {tiles.map((tile, index) => (
           <Tile
-            onLongPress={() => true}
             key={tile.id + '-' + index}
             id={tile.id + '-' + index}
             type={tile.type}
