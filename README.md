@@ -13,3 +13,6 @@
 <video width="1280" height="960" controls>
   <source src="assets/demo.mov" type="video/mp4">
 </video>
+
+https://github.com/yzhe554/react-native-animations/assets/7010056/bcd0b2cd-3c10-4f44-bc7f-c0bd7c20ca61
+
