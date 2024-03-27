@@ -16,3 +16,5 @@
 
 https://github.com/yzhe554/react-native-animations/assets/7010056/bcd0b2cd-3c10-4f44-bc7f-c0bd7c20ca61
 
+https://github.com/yzhe554/react-native-animations/assets/7010056/e87587c2-0f8c-4584-b17a-4d9783f358b9
+
